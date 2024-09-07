@@ -5,73 +5,78 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    MediaPlayer mediaPlayer;
-    boolean isPlaying = false; // Variable to track if the music is playing
+    private MediaPlayer mediaPlayer;
+    private boolean isPlaying = false;
+    private ImageView imgFriendship;
+    private int currentImageIndex = 0;
+
+    // Array holding the drawable references for the images
+    private int[] images = {
+            R.drawable.friendship_icon,  // First image
+            R.drawable.another_image1,   // Second image
+            R.drawable.another_image2,
+            R.drawable.another_image3// Third image
+            // Add more images if needed
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);  // Uses the updated LinearLayout XML file
+        setContentView(R.layout.activity_main);
 
-        // Initialize UI components
-        TextView tvFriendshipMessage = findViewById(R.id.tvFriendshipMessage);
-        ImageView imgFriendship = findViewById(R.id.imgFriendship);
-        Button btnPlayPauseSound = findViewById(R.id.btnPlaySound);
+        Button btnPlaySound = findViewById(R.id.btnPlaySound);
+        Button btnChangePicture = findViewById(R.id.btnChangePicture);
         Button btnShowToast = findViewById(R.id.btnShowToast);
+        imgFriendship = findViewById(R.id.imgFriendship);
 
-        // Set the friendship message
-        tvFriendshipMessage.setText("Happy Friendship Day!");
+        // Initialize MediaPlayer with the friendship theme song
+        mediaPlayer = MediaPlayer.create(this, R.raw.friendship_theme);
 
-        // Set the MediaPlayer to play the friendship theme
-        mediaPlayer = MediaPlayer.create(this, R.raw.friendship_theme); // Ensure the MP3 file is placed in res/raw
-
-        // Toggle play/pause on button click with Toast messages
-        btnPlayPauseSound.setOnClickListener(new View.OnClickListener() {
+        // Play/Pause button functionality
+        btnPlaySound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPlaying) {
-                    // If music is currently playing, pause it
                     mediaPlayer.pause();
-                    btnPlayPauseSound.setText("Play Friendship Theme"); // Change button text to "Play"
-                    isPlaying = false;  // Update status
-
-                    // Show a Toast indicating that music is paused
+                    isPlaying = false;
                     Toast.makeText(MainActivity.this, "Music Paused", Toast.LENGTH_SHORT).show();
                 } else {
-                    // If music is paused, start playing
                     mediaPlayer.start();
-                    btnPlayPauseSound.setText("Pause Friendship Theme"); // Change button text to "Pause"
-                    isPlaying = true;  // Update status
-
-                    // Show a Toast indicating that music is playing
+                    isPlaying = true;
                     Toast.makeText(MainActivity.this, "Music Playing", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        // Show a general Toast message on button click
+        // Change Picture button functionality
+        btnChangePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Update the image index, looping back to the start after the last image
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                imgFriendship.setImageResource(images[currentImageIndex]);
+            }
+        });
+
+        // Show Toast button functionality
         btnShowToast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Love you my all friends", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Love you my all buddies!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        // Release the MediaPlayer resources
         if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
+            mediaPlayer.release(); // Release the MediaPlayer when activity is destroyed
         }
+        super.onDestroy();
     }
 }

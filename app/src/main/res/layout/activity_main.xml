@@ -33,6 +33,15 @@
 
     <!-- Button to play friendship theme sound -->
     <Button
+        android:id="@+id/btnChangePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_picture"
+        android:textColor="@color/black"
+        android:backgroundTint="#3478F6"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
+    <Button
         android:id="@+id/btnPlaySound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,8 +59,6 @@
         android:text="@string/show_friendship_toast"
         android:textColor="@color/black"
         android:backgroundTint="#E24236"
-
         android:layout_gravity="center"
         android:layout_marginTop="16dp"/>
-
 </LinearLayout>
